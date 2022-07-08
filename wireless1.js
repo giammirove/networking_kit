@@ -81,8 +81,11 @@ function raggio_zona_fresnel_100(frequenza, distanza) {
 
 function raggio_zona_fresnel_60(frequenza, distanza) {
   let r = 43.3 * Math.sqrt(distanza / (4 * frequenza));
-  r = convert_feet_m(r);
-  console.log(`[-] Raggio della zona di Fresnel 100% ${r}`);
+  console.log(
+    `[-] Raggio della zona di Fresnel 60%\n\t${r} feet\n\t${convert_feet_m(
+      r
+    )} m`
+  );
   return r;
 }
 
@@ -96,6 +99,7 @@ function trova_potenza_di_trasmissione(
 ) {
   let fade_margin = 0;
   if (nebbia) fade_margin = FADE_MARGIN;
+  console.log(`[-] Uso fade margin di ${fade_margin} dBm`);
   let potenza_ricevuta_parziale = calc_potenza_ricevuta(
     0,
     guadagni,
@@ -190,6 +194,93 @@ function trova_distanza_minima(
   let distanza = distance_from_loss(perdita_distanza, frequenza);
   console.log(`[-] Distanza ${distanza}`);
 }
+
+function menu() {
+  console.log(`Scegli una opzione`);
+  console.log(`[1] Cerca la incognita`);
+  console.log(`[2] Calcola raggio di Fresnel`);
+  let input = reader.questionInt("> ");
+  if (input == 1) {
+    cerca_x();
+  } else if (input == 2) {
+    cerca_raggio();
+  } else {
+    console.log(`[x] Bruh scegli bene`);
+  }
+}
+
+function cerca_raggio() {
+  let frequenza = reader.questionFloat("[?] Raggio in Ghz : ");
+  let distanza = reader.questionFloat("[?] Distanza in miglia : ");
+  let perc = reader.questionInt("[?] Percentuale (60 o 100) : ");
+  let raggio = 0;
+
+  if (perc == 60) {
+    raggio = raggio_zona_fresnel_60(frequenza, distanza);
+  } else if (perc == 100) {
+    raggio = raggio_zona_fresnel_100(frequenza, distanza);
+  } else console.log(`[x] Non cosi skillato bruh`);
+}
+
+function cerca_x() {
+  console.log(`[!] Ricorda che tutti i dati vanno inseriti positivi`);
+  console.log(`[!] Inserisci 'x' quando e' l'incognita da trovare`);
+  let guadagni = reader.question("[?] Guadagni : ");
+  let perdite = reader.question("[?] Perdite ( >= 0 ): ");
+  let frequenza = reader.question("[?] Frequenza (Mhz) : ");
+  let distanza = reader.question("[?] Distanza (miglia) : ");
+  let potenza_trasmissione = reader.question(
+    "[?] Potenza di trasmissione (dBm) : "
+  );
+  let receiver_sensitivity = reader.question(
+    "[?] Receiver sensitivity (>= 0)(dBm) : "
+  );
+  let fade_margin = reader.question("[?] Fade margin [10,20] (dBm) : ");
+  let nebbia = reader.question("[?] C'e' nebbia ( o disturbi vari ) [y/n] : ");
+  if (nebbia == "y") nebbia = true;
+  else nebbia = false;
+
+  console.log("\n");
+  if (potenza_trasmissione == "x") {
+    potenza_trasmissione = trova_potenza_di_trasmissione(
+      parseFloat(guadagni),
+      parseFloat(perdite),
+      parseFloat(frequenza),
+      parseFloat(distanza),
+      parseFloat(receiver_sensitivity),
+      nebbia
+    );
+  } else if (receiver_sensitivity == "x") {
+    receiver_sensitivity = trova_receiver_sensitivity(
+      parseFloat(guadagni),
+      parseFloat(perdite),
+      parseFloat(frequenza),
+      parseFloat(distanza),
+      parseFloat(potenza_trasmissione),
+      parseFloat(fade_margin)
+    );
+  } else if (distanza == "x") {
+    distanza = trova_distanza_minima(
+      parseFloat(guadagni),
+      parseFloat(perdite),
+      parseFloat(frequenza),
+      parseFloat(potenza_trasmissione),
+      parseFloat(receiver_sensitivity),
+      parseFloat(fade_margin)
+    );
+  } else if (frequenza == "x") {
+    frequenza = trova_frequenza_minima(
+      parseFloat(guadagni),
+      parseFloat(perdite),
+      parseFloat(distanza),
+      parseFloat(potenza_trasmissione),
+      parseFloat(receiver_sensitivity),
+      parseFloat(fade_margin)
+    );
+  }
+}
+
+menu();
 
 function test() {
   let p = trova_potenza_di_trasmissione(14, 0, 1900, 5, 97, true);
