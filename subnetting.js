@@ -12,6 +12,7 @@ function calc_info(ip, cidr) {
   let router = util.get_router(ip, cidr);
   let broadcast = util.get_broadcast(ip, cidr);
   console.log(`[-] Network ${network}/${cidr}`);
+  console.log(`[-] Netmask ${util.bit_to_ip(util.mask_to_bit(cidr))}`);
   console.log(`[-] First Host ${first}`);
   console.log(`[-] Last Host ${last}`);
   console.log(`[-] Router ${router}`);
@@ -48,7 +49,7 @@ function check_subnet(network, cidr, gateway, broadcast) {
   let sub_ip = network;
   for (let i = 0; i < sub.length; i++) {
     let new_cidr = 32 - util.find_exp_for_host(sub[i].max_host);
-    console.log(`\nSubnet ${sub[i].nome} (${sub[i].max_host})`);
+    console.log(`\nSubnet ${sub[i].nome}(${sub[i].max_host})`);
     let info = calc_info(sub_ip, new_cidr);
     console.log(`[-] Gateway ${gateway}`);
     check_subnet(sub_ip, new_cidr, info.router, info.broadcast);

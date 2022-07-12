@@ -136,7 +136,7 @@ function trova_fade_margin(
     frequenza,
     distanza
   );
-  console.log(`[-] Receiver power ${received_power}`);
+  // console.log(`[-] Receiver power ${received_power}`);
   let fade_margin = received_power + receiver_sensitivity;
   console.log(`[-] Fade margin di ${fade_margin} dBm`);
   if (fade_margin > 0) {
@@ -276,6 +276,15 @@ function cerca_x() {
       parseFloat(potenza_trasmissione),
       parseFloat(receiver_sensitivity),
       parseFloat(fade_margin)
+    );
+  } else if (fade_margin == "x") {
+    fade_margin = trova_fade_margin(
+      parseFloat(guadagni),
+      parseFloat(perdite),
+      parseFloat(frequenza),
+      parseFloat(distanza),
+      parseFloat(potenza_trasmissione),
+      parseFloat(receiver_sensitivity)
     );
   }
 }
