@@ -226,7 +226,9 @@ function cerca_x() {
   console.log(`[!] Ricorda che tutti i dati vanno inseriti positivi`);
   console.log(`[!] Inserisci 'x' quando e' l'incognita da trovare`);
   let guadagni = reader.question("[?] Guadagni : ");
-  let perdite = reader.question("[?] Perdite ( >= 0 ): ");
+  let perdite = reader.question(
+    "[?] Perdite (senza free space loss) ( >= 0 ): "
+  );
   let frequenza = reader.question("[?] Frequenza (Mhz) : ");
   let distanza = reader.question("[?] Distanza (miglia) : ");
   let potenza_trasmissione = reader.question(

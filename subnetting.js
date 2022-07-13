@@ -5,6 +5,8 @@ let input = process.argv[2];
 let ip = input.split("/")[0];
 let cidr = input.split("/")[1];
 
+const RESERVED_HOST = 3;
+
 function calc_info(ip, cidr) {
   let network = util.get_network(ip, cidr);
   let first = util.get_first_host(ip, cidr);
@@ -35,7 +37,7 @@ function check_subnet(network, cidr, gateway, broadcast) {
   let n_sub = ask_subnet();
   for (let i = 0; i < n_sub; i++) {
     let nome = reader.question("[?] Nome : ");
-    let max_host = parseInt(reader.question("[?] Max host : "));
+    let max_host = parseInt(reader.question("[?] Max host : ")) + RESERVED_HOST;
     sub.push({ nome, max_host });
   }
   // sub = [
@@ -49,7 +51,7 @@ function check_subnet(network, cidr, gateway, broadcast) {
   let sub_ip = network;
   for (let i = 0; i < sub.length; i++) {
     let new_cidr = 32 - util.find_exp_for_host(sub[i].max_host);
-    console.log(`\nSubnet ${sub[i].nome}(${sub[i].max_host})`);
+    console.log(`\nSubnet ${sub[i].nome}(${sub[i].max_host - RESERVED_HOST})`);
     let info = calc_info(sub_ip, new_cidr);
     console.log(`[-] Gateway ${gateway}`);
     check_subnet(sub_ip, new_cidr, info.router, info.broadcast);
