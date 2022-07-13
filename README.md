@@ -1,6 +1,8 @@
 == IP ==
 
-Esempio
+Verifica la validita' degli ipv4, se sono rete oppure host, classe e quante sottoreti/superreti ci sono
+<details>
+<summary> Esempio </summary>
 
 `node ipvalidi.js 191.0.0.2/20`
 
@@ -9,8 +11,48 @@ Esempio
 > [-] E' rete
 
 > [-] Subnetting di 16 reti
+</details>
+
+== NETWORK FLOW ==
+
+Calcola thoughput , utilizzo percentuale della rete , dimensione massima dei pacchetti per avere congestione , formato dei pacchetti con protocollo IP, congestion window
+
+<details>
+<summary> Esempio </summary>
+
+`node network_flow.js`
+
+>[-] Scegli una delle opzioni
+>
+ >1. Calcola throughput
+ >
+ >2. Calcola utilizzo della rete
+ >
+ >3. Calcola dimensione massima del pacchetto per la congestion
+ >
+ >4. Trasmetti blocco dati con protocollo IP
+ >
+ >5. Congestion Window
+ >
+ > > 1
+ >
+ >[!] Si considera stop and wait !
+ >
+ >[?] Dimensione pacchetto in KB : 1
+ >
+ >[?] RTT in ms : 250
+ >
+ >[-] Throughput 4 KB/s
+ >
+ </details>
 
 == WIRELESS 1 ==
+
+Calcola la incognita per quanto riguarda la trasmissione wireless (fade margina, potenza di trasmissione, distanza ... ) e 
+il raggio di Fresnel
+
+<details>
+<summary> Esempio </summary>
 
 `node wireless1.js`
 
@@ -53,6 +95,7 @@ Esempio
 >                15.15447210577696 dBm
 >
 >                32.76779444300169 mW
+</details>
 
 == WIRELESS 2 ==
 
@@ -63,6 +106,9 @@ Calcola se la risultante dei due segnali genera una comunicazione accettabile
 == SUBNETTING ==
 
 Calcolatore di piano di indirizzamente locale ipv4 vlsm
+
+<details>
+<summary> Esempio </summary>
 
 `node subnetting.js 122.100.180.0/21`
 
@@ -157,3 +203,5 @@ Calcolatore di piano di indirizzamente locale ipv4 vlsm
 > [-] Gateway 122.100.183.254
 >
 > [?] Quante subnet ci sono ? 0
+
+</details>
