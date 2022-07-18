@@ -5,7 +5,11 @@ const FADE_MARGIN = 10;
 
 // F in Mhz . D in miles
 function free_space_loss(F, D) {
-  return 36.6 + 20 * Math.log10(F) + 20 * Math.log10(D);
+  let f = 36.6 + 20 * Math.log10(F) + 20 * Math.log10(D);
+  console.log(
+    `[-] Free space loss {${f}} = 36.6 + 20 * Math.log10(${F}) + 20 * Math.log10(${D})`
+  );
+  return f;
 }
 
 // loss = 36.6 + 20 * Math.log10(F) + 20 * Math.log10(D)
@@ -36,9 +40,12 @@ function calc_potenza_ricevuta(
   frequenza,
   distanza
 ) {
-  return (
-    p_trasmessa + guadagni - perdite - free_space_loss(frequenza, distanza)
+  let free_space = free_space_loss(frequenza, distanza);
+  let p = p_trasmessa + guadagni - perdite - free_space;
+  console.log(
+    `[-] Potenza ricevuta {${p}} = potenza trasmessa {${p_trasmessa}} + guadagni {${guadagni}} - perdite {${perdite}} - free space loss {${free_space}}`
   );
+  return p;
 }
 
 function convert_mw_dbm(s) {
@@ -72,6 +79,9 @@ function convert_m_feet(s) {
 function raggio_zona_fresnel_100(frequenza, distanza) {
   let r = 72.2 * Math.sqrt(distanza / (4 * frequenza));
   console.log(
+    `[-] Raggio {${r}} = 72.2 * Math.sqrt(distanza {${distanza}} / (4 * frequenza {${frequenza}}))`
+  );
+  console.log(
     `[-] Raggio della zona di Fresnel 100%\n\t${r} feet\n\t${convert_feet_m(
       r
     )} m`
@@ -81,6 +91,9 @@ function raggio_zona_fresnel_100(frequenza, distanza) {
 
 function raggio_zona_fresnel_60(frequenza, distanza) {
   let r = 43.3 * Math.sqrt(distanza / (4 * frequenza));
+  console.log(
+    `[-] Raggio {${r}} = 43.3 * Math.sqrt(distanza {${distanza}} / (4 * frequenza {${frequenza}}))`
+  );
   console.log(
     `[-] Raggio della zona di Fresnel 60%\n\t${r} feet\n\t${convert_feet_m(
       r
@@ -107,10 +120,6 @@ function trova_potenza_di_trasmissione(
     frequenza,
     distanza
   );
-  console.log(
-    `[-] Free space loss ${free_space_loss(frequenza, distanza)} dBm`
-  );
-  console.log(`[-] Potenza ricevuta parziale ${potenza_ricevuta_parziale} dBm`);
   let potenza_trasmessa =
     -potenza_ricevuta_parziale - receiver_sensitivity + fade_margin;
   console.log(

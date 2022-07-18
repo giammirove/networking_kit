@@ -9,6 +9,9 @@ function calcola_throughput() {
   );
   let rtt = reader.question("[?] RTT in ms : ");
   let throughput = dimensione_pacchetto / (rtt / 1000);
+  console.log(
+    `[-] Throughput = dimensione pacchetto {${dimensione_pacchetto} KB} / (rtt {${rtt} ms}/1000) `
+  );
   console.log(`[-] Throughput ${throughput} KB/s`);
 }
 
@@ -19,6 +22,9 @@ function calcola_utilizzo() {
   let capacita = reader.question("[?] Capacita' del canale Mbps : ");
   let throughput = reader.question("[?] Throughput KB/s : ");
   let utilizzo = (throughput * dimensione_pacchetto) / (capacita * 1000);
+  console.log(
+    `[-] Utilizzo = (throughput {${throughput} KB/s} * dimensione pacchetto {${dimensione_pacchetto} KB}) / (capacita' {${capacita} Mbps} * 1000)`
+  );
   console.log(`[-] Utilizzo ${utilizzo * 100} %`);
 }
 
@@ -31,6 +37,9 @@ function dimensione_massima_pacchetto() {
   // R e' la capacita del canale
   // quindi affinche sia 1 il rapporto allora L = R/a
   let dimensione_pacchetto = (capacita * 1000) / pack_sec;
+  console.log(
+    `[-] Dimensione pacchetto = (capacita {${capacita} Mbit/s} * 1000) / pacchetti al secondo {${pack_sec}}`
+  );
   console.log(`[-] Dimensione pacchetto ${dimensione_pacchetto} Kbit`);
 }
 
@@ -69,11 +78,16 @@ function calcola_congestion_window() {
   );
 
   let kb_s = capacita_rete * (rtt / 1000);
+  console.log(
+    `[-] Dati al secondo = capacita della rete {${capacita_rete} Mbit/s} * (rtt {${rtt} ms})`
+  );
   console.log(`[-] Dati in KB al secondo ${kb_s}`);
   let peso_ack = (peso_percentuale_ack / 100) * kb_s;
   let peso_dati = kb_s - peso_ack;
   let congestion_window = parseInt(peso_dati / dimensione_dati);
-
+  console.log(
+    `[-] Congestion window = Dimensione dei dati {${peso_dati}} / dimensione dati {${dimensione_dati} KB}`
+  );
   console.log(`[-] Congestion Window e' di ${congestion_window}`);
 }
 

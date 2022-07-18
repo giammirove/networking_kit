@@ -14,13 +14,14 @@ function execute(ip, cidr) {
     for (let i = 0; i < 32; i++) {
       bin2 += bin[i];
       bin3 += bin[i];
-      if ((i + 1) % 8 == 0) bin3 += " ";
+      if ((i + 1) % 8 == 0) {
+        bin2 += " ";
+        bin3 += " ";
+      }
       if (i == cidr - 1) bin3 += "|";
-      if (i == cidr - 1) bin2 += " ";
     }
     console.log(`[-] Ben formattato\n\t${bin3}`);
     let host = bin2.split(" ")[1].padStart(32, "0");
-    console.log(`[-] Binario\n\t${bin2}`);
     console.log("[-] E' valido");
     if (utility.is_host(ip, cidr)) {
       console.log(`[-] E' host \n\t${host}\n\t${utility.bit_to_ip(host)}`);

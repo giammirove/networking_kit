@@ -44,13 +44,21 @@ function check_subnet(network, cidr, gateway, broadcast) {
   //   { nome: "A", max_host: 1000 },
   //   { nome: "B", max_host: 210 },
   // ];
+  console.log(`[-] Ordine le sottoreti in ordine decrescente di max host`);
   sub.sort(function (a, b) {
     return b.max_host - a.max_host;
   });
 
   let sub_ip = network;
   for (let i = 0; i < sub.length; i++) {
-    let new_cidr = 32 - util.find_exp_for_host(sub[i].max_host);
+    let bit_per_host = util.find_exp_for_host(sub[i].max_host);
+    console.log(
+      `[-] Numero dei bit dedicati agli host = ${sub[i].max_host} host ~ 2^(${bit_per_host})`
+    );
+    let new_cidr = 32 - bit_per_host;
+    console.log(
+      `[-] Nuovo CIDR {${new_cidr}} = 32 - bit per gli host {${bit_per_host}}`
+    );
     console.log(`\nSubnet ${sub[i].nome}(${sub[i].max_host - RESERVED_HOST})`);
     let info = calc_info(sub_ip, new_cidr);
     console.log(`[-] Gateway ${gateway}`);
