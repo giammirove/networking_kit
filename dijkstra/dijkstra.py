@@ -66,9 +66,11 @@ def printshortest(s, c, p):
         print(c, end="->")
 
 def main():
-    if len(sys.argv) > 1 and sys.argv[1] == "--help" or sys.argv[1] == "-h":
-        print(helptext)
-        exit()
+    print(len(sys.argv))
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "--help" or sys.argv[1] == "-h":
+            print(helptext)
+            exit()
     ### Initialization
     lines = []
     with open("dijkstra-dist.txt", "r") as f:
